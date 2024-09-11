@@ -169,3 +169,7 @@ cd repo-geek
 - Access your GitHub repositories after authentication.
 - Browse through the repository file structure.
 - Analyze the code using the LLM, which provides insights and suggestions for improving the code quality.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
