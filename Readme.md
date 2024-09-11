@@ -32,10 +32,10 @@ Follow these steps to get the project up and running:
 
 ### 1. Clone the Repository
 
-    ```bash
-    git clone https://github.com/your-username/repo-geek.git
-    cd repo-geek
-    ```
+```bash
+git clone https://github.com/your-username/repo-geek.git
+cd repo-geek
+```
 
 ### 2. Setting up the Backend
 
