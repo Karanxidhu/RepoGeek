@@ -33,7 +33,7 @@ Follow these steps to get the project up and running:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/repo-geek.git
+git clone https://github.com/Karanxidhu/RepoGeek.git
 cd repo-geek
 ```
 
