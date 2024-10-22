@@ -1,7 +1,7 @@
 # RepoGeek
 
 RepoGeek is a full-stack application built with **Next.js** (frontend) and **Express.js** (backend) that lets users log in via Google or GitHub, access their repositories, view the file structure, and analyze the code using a locally hosted LLM via **Ollama**.
-
+[Video demo](https://x.com/karan_xidhu/status/1833917172156170440?s=46)
 ## Features
 
 - **Authentication**: Log in via Google or GitHub.
