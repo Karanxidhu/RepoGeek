@@ -1,33 +1,43 @@
 const express = require('express');
 const fetchuser = require('../middleware/middleware');
 const router = express.Router();
-const { Ollama } = require('ollama');
 const NodeCache = require('node-cache');
 const myCache = new NodeCache();
+
+// Import Gemini (Generative AI) client
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+
+// Initialize Gemini client
+const genAI = new GoogleGenerativeAI("AIzaSyDfnlBGHsbt9qg_T7bUofqs4ZUXu472Efg"); // Set your API key in environment variable
+
+const model = "gemini-2.0-flash"; // Or another Gemini model
 
 router.post('/analyse', fetchuser, async (req, res) => {
     console.log("Request received");
     const { content } = req.body;
     try {
-        const ollama = new Ollama({ device: 'cuda' });
         const cachedResult = myCache.get(content);
         if (cachedResult) {
             console.log("req returned")
             return res.json(cachedResult);
         }
 
-        const response = await ollama.chat({
-            model: 'RepoGeek',
-            messages: [{ role: 'user', content: 'Analyze this code also give mailcious status if it contains malicious code (give proper headings and paragraph spaces and hr lines) also rate the code out of 10 on multiple factors:\n ' + content }],
-        });
+        // Prepare prompt
+        const prompt = `Analyze this code also give malicious status if it contains malicious code (give proper headings and paragraph spaces and hr lines) also rate the code out of 10 on multiple factors:\n${content}`;
 
-        console.log(response.message.content);
-        myCache.set(content, response.message.content);
-        return res.json(response.message.content);
+        // Call Gemini
+        const geminiModel = genAI.getGenerativeModel({ model });
+        const result = await geminiModel.generateContent(prompt);
+
+        const geminiResponse = result?.response?.text() || 'No response from Gemini';
+
+        console.log(geminiResponse);
+        myCache.set(content, geminiResponse);
+        return res.json(geminiResponse);
     } catch (error) {
         console.error('Error:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
-})
-
+});
 
 module.exports = router
