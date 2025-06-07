@@ -32,7 +32,7 @@ export default function Home() {
         <SparklesText sparklesCount={30} text="Welcome to Repo Geek" className="text-center my-2 text-5xl font-bold tracking-[-0.02em] drop-shadow-sm md:text-8xl md:leading-[5rem]" colors={{ first: "#9E7AFF", second: "#FE8BBB" }} />
         <CircleProp />
 
-        <p className="leading-3 md:leading-7 w-full text-center text-xs md:text-lg md:font-medium md:w-[60%] mx-auto text-zinc-400">Unlock the potential of your repositories with <span className="font-extrabold">Repo Geek.</span> Whether you're a seasoned developer or just starting out, our tool offers an in-depth analysis of your GitHub or any public repo, identifying issues, optimizing code quality, and providing actionable insights—all powered by the cutting-edge <span className="font-extrabold">Llama3.1</span> AI model.</p>
+        <p className="leading-3 md:leading-7 w-full text-center text-xs md:text-lg md:font-medium md:w-[60%] mx-auto text-zinc-400">Unlock the potential of your repositories with <span className="font-extrabold">Repo Geek.</span> Whether you&apos;re a seasoned developer or just starting out, our tool offers an in-depth analysis of your GitHub or any public repo, identifying issues, optimizing code quality, and providing actionable insights—all powered by the cutting-edge <span className="font-extrabold">Llama3.1</span> AI model.</p>
 
         <div className="relative mx-auto w-full max-w-[24rem] items-center justify-center overflow-hidden rounded-lg bg-background px-5 pt-4 md:pb-80 md:shadow-xl">
           <Globe className="top-20 z-10" />

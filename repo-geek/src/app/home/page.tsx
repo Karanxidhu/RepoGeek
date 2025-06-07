@@ -13,10 +13,12 @@ import RepoList from '@/customComponents/RepoList';
 import { DataContext } from '@/context/DataContext';
 import Image from 'next/image';
 
-const Circle = forwardRef<
-  HTMLDivElement,
-  { className?: string; children?: React.ReactNode }
->(({ className, children }, ref) => {
+interface CircleProps {
+  className?: string;
+  children?: React.ReactNode;
+}
+
+const Circle = forwardRef<HTMLDivElement, CircleProps>(({ className, children }, ref) => {
   return (
     <div
       ref={ref}
@@ -30,23 +32,28 @@ const Circle = forwardRef<
   );
 });
 
-const page = () => {
-  const handleGiHub = (e) => {
-    e.preventDefault()
-    console.log(process.env.BACK_END_URL)
-    router.push(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/github`)
-}
+Circle.displayName = 'Circle';
+
+const HomePage = () => {
+  const handleGitHub = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    console.log(process.env.BACK_END_URL);
+    router.push(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/github`);
+  };
+
   const { user } = useContext(DataContext);
   const containerRef = useRef<HTMLDivElement>(null);
   const div1Ref = useRef<HTMLDivElement>(null);
   const div2Ref = useRef<HTMLDivElement>(null);
   const router = useRouter();
+
   useEffect(() => {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
     if (!token) {
-      router.push('/')
+      router.push('/');
     }
-  }, [])
+  }, [router]);
+
   return (
     <div className='flex w-full min-h-screen flex-col items-center justify-center p-5 md:p-32'>
       <HyperText
@@ -67,7 +74,6 @@ const page = () => {
           <div className="flex flex-row justify-between">
             <Circle ref={div1Ref}>
               <Icons.github />
-
             </Circle>
             <Circle ref={div2Ref}>
               <Icons.user />
@@ -80,10 +86,14 @@ const page = () => {
           fromRef={div1Ref}
           toRef={div2Ref}
         />
-        {user.accessToken ? <RepoList username = {user.githubUsername}/> : <Button onClick={handleGiHub} className='w-[70%] mt-8 mx-auto space-x-3 group flex justify-center group-hover:bg-white bg-zinc-950 border items-center'>
-          <Image src="/github.png" width={24} height={24} alt="google" />
-          <p className='text-white group group-hover:text-zinc-950 duration-100 text-center font-semibold '>Login with GitHub</p>
-        </Button>}
+        {user?.accessToken ? (
+          <RepoList username={user.githubUsername} />
+        ) : (
+          <Button onClick={handleGitHub} className='w-[70%] mt-8 mx-auto space-x-3 group flex justify-center group-hover:bg-white bg-zinc-950 border items-center'>
+            <Image src="/github.png" width={24} height={24} alt="github" />
+            <p className='text-white group group-hover:text-zinc-950 duration-100 text-center font-semibold'>Login with GitHub</p>
+          </Button>
+        )}
       </div>
       <DotPattern
         className={cn(
@@ -91,8 +101,8 @@ const page = () => {
         )}
       />
     </div>
-  )
-}
+  );
+};
 
 const Icons = {
   github: () => (
@@ -119,4 +129,4 @@ const Icons = {
   ),
 };
 
-export default page
+export default HomePage;
