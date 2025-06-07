@@ -16,56 +16,39 @@ import AnimatedShinyText from "@/components/magicui/animated-shiny-text";
 import { DialogDemo } from '@/customComponents/Modal';
 import { Progress } from "@/components/ui/progress"
 
-interface PageParams {
-    params: {
-        slug: string;
-    };
-}
 
-const page = ({ params }: PageParams) => {
+
+const page = ({ params }) => {
     const URLparams = useSearchParams()
-    const { theme } = useTheme();
+    const theme = useTheme();
     const branch = URLparams.get('branch')
     const pub = URLparams.get('pub')
-    const [fileName, setFileName] = useState<string>()
+    const [fileName, setFileName] = useState()
     const full_name = URLparams.get('full_name')
-    const { GetTree, tree, GetFile, file, llmRespose, response, progress, loading } = useContext(DataContext)
-
     useEffect(() => {
-        if (pub === 'false' && full_name && branch) {
+        if(pub == 'false'){
             GetTree(full_name, branch)
         }
-    }, [GetTree, full_name, branch, pub])
-
-    const renderTree = React.useCallback((elements: any[]) => {
+    }, [])
+    const { GetTree, tree, GetFile, file, llmRespose, response, progress, loading, GetTreeURL} = useContext(DataContext)
+    console.log(params.slug)
+    function renderTree(elements: any) {
         return elements.map((element: any, index: number) => {
             if (element.children && element.children.length > 0) {
                 return (
                     <Folder key={index} element={element.name} value={element.id}>
-                        {renderTree(element.children)}
+                        {renderTree(element.children)} {/* Recursive call */}
                     </Folder>
                 );
             } else {
                 return (
-                    <File key={index} value={element.id}>
-                        <p onClick={() => { 
-                            if (full_name && element.actualPath) {
-                                GetFile(full_name, element.actualPath)
-                                setFileName(element.name)
-                            }
-                        }}>{element.name}</p>
+                    <File key={index} value={element.id} >
+                        <p onClick={() => { GetFile(full_name, element.actualPath); setFileName(element.name) }}>{element.name}</p>
                     </File>
                 );
             }
         });
-    }, [GetFile, full_name])
-
-    const handleAnalyze = React.useCallback(() => {
-        if (file) {
-            llmRespose(file)
-        }
-    }, [file, llmRespose])
-
+    }
     return (
         <div className='relative min-h-screen flex flex-col justify-center p-5 md:p-12'>
             <WordPullUp
@@ -80,7 +63,7 @@ const page = ({ params }: PageParams) => {
                     )}
                 >
                     <AnimatedShinyText className=" inline-flex items-center justify-center px-4 py-1 transition duration-2000 ease-out hover:text-neutral-600 hover:duration-300 hover:dark:text-neutral-400">
-                        <span onClick={handleAnalyze}>✨ Analyse using AI</span>
+                        <span onClick={() => { llmRespose(file) }}>✨ Analyse using AI</span>
                         <ArrowRightIcon className="ml-1 size-3 transition-transform duration-700 ease-in-out group-hover:translate-x-0.5" />
                     </AnimatedShinyText>
                 </div>}
@@ -105,18 +88,20 @@ const page = ({ params }: PageParams) => {
                         ]}
                         elements={tree}
                     >
-                        {renderTree(tree)}
+                        {
+                            renderTree(tree)
+                        }
                     </Tree>}
                 </div>
                 {file ?
-                    <ShineBorder color={theme === "dark" ? "white" : "#09090b"} className='overflow-scroll max-h-fit flex flex-col md:w-[65%] mt-8 md:mt-0 w-full md:p-5 bg-zinc-950 rounded-xl border-2 mx-auto font-mono font-medium z-10'>
+                    <ShineBorder color={theme.theme === "dark" ? "white" : "#09090b"} className='overflow-scroll max-h-fit flex flex-col md:w-[65%] mt-8 md:mt-0 w-full md:p-5 bg-zinc-950 rounded-xl border-2 mx-auto font-mono font-medium z-10'>
                         {!loading && <div
                             className={cn(
                                 "group rounded-full border border-black/5 bg-neutral-100 text-base text-white transition-all ease-in hover:cursor-pointer hover:bg-neutral-200 dark:border-white/5 dark:bg-neutral-900 dark:hover:bg-neutral-800 mx-auto my-8 visible relative md:invisible md:absolute",
                             )}
                         >
                             <AnimatedShinyText className=" inline-flex items-center justify-center px-4 py-1 transition duration-2000 ease-out hover:text-neutral-600 hover:duration-300 hover:dark:text-neutral-400">
-                                <span onClick={handleAnalyze}>✨ Analyse using AI</span>
+                                <span onClick={() => { llmRespose(file) }}>✨ Analyse using AI</span>
                                 <ArrowRightIcon className="ml-1 size-3 transition-transform duration-700 ease-in-out group-hover:translate-x-0.5" />
                             </AnimatedShinyText>
                         </div>}
