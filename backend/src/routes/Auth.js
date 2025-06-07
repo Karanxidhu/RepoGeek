@@ -61,7 +61,7 @@ passport.use(
 passport.use(new GitHubStrategy({
     clientID: githubClient,
     clientSecret: githubSecret,
-    callbackURL: "/api/auth/github/callback"
+    callbackURL: `${BACK_END_URL}/api/auth/github/callback`
   },
   function(accessToken, refreshToken, profile, done) {
     profile.accessToken = accessToken;
