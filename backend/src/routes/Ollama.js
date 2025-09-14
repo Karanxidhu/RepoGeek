@@ -10,7 +10,7 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 // Initialize Gemini client
 const genAI = new GoogleGenerativeAI("AIzaSyDfnlBGHsbt9qg_T7bUofqs4ZUXu472Efg"); // Set your API key in environment variable
 
-const model = "gemini-2.0-flash"; // Or another Gemini model
+const model = "gemini-2.5-flash"; // Or another Gemini model
 
 router.post('/analyse', fetchuser, async (req, res) => {
     console.log("Request received");
